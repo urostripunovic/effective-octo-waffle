@@ -84,7 +84,7 @@ export function OrdersList() {
                         variant={view.variant}
                         onClick={() => {
                             alert(
-                                `Order: ${view.order}` ||
+                                (view.order && `Order: ${view.order}`) ||
                                     "Välja gärna en order du vill kolla på"
                             );
                             setView({
