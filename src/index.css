@@ -1,4 +1,8 @@
 @import 'modern-normalize/modern-normalize.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -21,4 +25,11 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.custom-css-button {
+  /* Add your custom styles here */
+  background-color: yellow;
+  color: black;
+  /* ... */
 }

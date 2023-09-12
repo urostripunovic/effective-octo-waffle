@@ -1,5 +1,6 @@
 import { AppRoutes } from './AppRoutes'
 import { AppHeader } from './components/AppHeader/AppHeader'
+import './index.css'
 
 /**
  *

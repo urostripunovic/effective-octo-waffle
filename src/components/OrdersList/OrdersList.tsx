@@ -1,17 +1,40 @@
 import { useEffect, useRef, useState } from "react";
-import { getOrders } from "../../api/api";
-import { Button } from "../Button/Button";
-import "./OrdersList.css";
+import { ApiOrderStatus, getOrders } from "../../api/api";
+import { Button, Variant } from "../Button/Button";
+
+interface Orders {
+    id: number;
+    created_at: string;
+    status: ApiOrderStatus;
+    products: [
+        {
+            id: string;
+            name: string;
+            quantity: number;
+            price: number;
+        }
+    ];
+    first_name: string;
+    last_name: string;
+}
+
+interface View {
+    click: boolean;
+    orderNbr?: number;
+    variant?: Variant;
+}
+
+const initialView: View = {
+    click: false,
+    orderNbr: undefined,
+};
 
 export function OrdersList() {
-    const ref = useRef(null);
-    const [orders, setOrders] = useState([]);
-    const [isLoading, setLoading] = useState(true);
-    const [view, setView] = useState({
-        click: false,
-        order: undefined,
-        variant: "primary",
-    });
+    const ref = useRef<null | HTMLButtonElement>(null);
+    const [orders, setOrders] = useState<Orders[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(true);
+    const [view, setView] = useState<View>(initialView);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -19,35 +42,37 @@ export function OrdersList() {
                 const orders = await getOrders();
                 setOrders(orders);
                 setLoading(false);
+                setError(null);
             } catch (error) {
-                setLoading(true);
-                throw "Fel med att hämta ordrar: " + error;
+                setError("Fel med att hämta ordrar: " + error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchOrders();
     }, []);
-
     //console.log(orders);
-
     return (
         <>
-            <h1>Orders List</h1>
+            <h1 className="mt-6 mb-4 text-4xl font-bold">Orders List</h1>
             {isLoading ? (
                 <p>Hämtar ordrar...</p>
+            ) : error ? (
+                <p>{error}</p>
             ) : (
                 <>
-                    <table id="orders">
+                    <table className="min-w-max w-4/6 table-auto mb-4">
                         <thead>
-                            <tr>
-                                <th>Ordernummer</th>
-                                <th>Datum</th>
-                                <th>Fullständigt namn</th>
-                                <th>Antal produkter</th>
-                                <th>Summa</th>
+                            <tr className="bg-[#5754f9] text-white uppercase text-sm leading-normal">
+                                <th className="py-3 px-6 text-left">Ordernummer</th>
+                                <th className="py-3 px-6 text-left">Datum</th>
+                                <th className="py-3 px-6 text-center">Fullständigt namn</th>
+                                <th className="py-3 px-6 text-center">Antal produkter</th>
+                                <th className="py-3 px-6 text-center">Summa</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {orders.map((order: any) => {
+                        <tbody className="text-gray-950 text-sm font-light">
+                            {orders.map((order) => {
                                 const totalSum = order.products.reduce(
                                     (sum: number, product: any) =>
                                         sum + product.price * product.quantity,
@@ -57,46 +82,47 @@ export function OrdersList() {
                                     order.first_name + " " + order.last_name;
                                 return (
                                     <tr
+                                        className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
                                         key={order.id}
                                         onClick={() =>
                                             setView({
                                                 click: true,
-                                                order: order.id,
+                                                orderNbr: order.id,
                                                 variant: "success",
                                             })
                                         }
                                     >
-                                        <td>{order.id}</td>
-                                        <td>
+                                        <td className="py-3 px-6 text-left whitespace-nowrap">{order.id}</td>
+                                        <td className="py-3 px-6 text-left">
                                             {order.created_at.split(":")[0]}
                                         </td>
-                                        <td>{fullName}</td>
-                                        <td>{order.products.length}</td>
-                                        <td>{totalSum} kr</td>
+                                        <td className="py-3 px-6 text-center">{fullName}</td>
+                                        <td className="py-3 px-6 text-center">{order.products.length}</td>
+                                        <td className="py-3 px-6 text-center">{totalSum} kr</td>
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
-
                     <Button
                         ref={ref}
+                        //className="custom-css-button"
+                        size="sm"
                         variant={view.variant}
                         onClick={() => {
                             alert(
-                                (view.order && `Order: ${view.order}`) ||
+                                (view.orderNbr && `Order: ${view.orderNbr}`) ||
                                     "Välja gärna en order du vill kolla på"
                             );
                             setView({
                                 click: false,
-                                order: undefined,
-                                variant: "primary",
+                                orderNbr: undefined,
                             });
                         }}
                     >
                         {!view.click
                             ? "Kolla på en order i mer detalj"
-                            : `En detaljerad vy av order ${view.order} är redo`}
+                            : `En detaljerad vy av order ${view.orderNbr} är redo`}
                     </Button>
                 </>
             )}

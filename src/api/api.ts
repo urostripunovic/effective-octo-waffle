@@ -24,6 +24,7 @@ export interface ApiCustomer {
 }
 
 export async function getOrders(){
-  const res = await fetch("/api/orders");
-  return await res.json();
+    //throw new Error("Simulated error: Unable to fetch orders.");
+    const res = await fetch("/api/orders");
+    return await res.json();
 }
