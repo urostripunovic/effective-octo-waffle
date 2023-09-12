@@ -34,9 +34,7 @@ export type Variant = "primary" | "accent" | "success" | "danger";
 
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement>,
-        VariantProps<typeof buttonVariants> {
-    variant?: Variant;
-}
+        VariantProps<typeof buttonVariants> {}
 
 /**
  * Button component is used to render a button element with pre-defined styles and can be customized with additional CSS classes.
