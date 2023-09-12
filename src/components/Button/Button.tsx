@@ -43,7 +43,7 @@ export interface ButtonProps
  *
  * @component
  * @param {string} className - Additional CSS classes, including classic and Tailwind CSS classes, can be added for the button.
- * @param {string} variant - The button's visual style variants.
+ * @param {Variant} variant - The button's visual style variants. Should be one of: "primary", "accent", "success", "danger".
  * @param {string} size - The button's size variants.
  * @param {React.Ref<HTMLButtonElement>} ref - A ref to the button element.
  * @returns {JSX.Element} - The rendered Button component.
