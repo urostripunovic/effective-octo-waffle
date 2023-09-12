@@ -54,7 +54,7 @@ export function OrdersList() {
         fetchOrders();
     }, []);
 
-    console.log(orders);
+    //console.log(orders);
 
     if (loading) {
         return (
@@ -111,9 +111,9 @@ export function OrdersList() {
                                             );
                                         }}
                                     >
-                                        <option value={1}>SEK</option>
-                                        <option value={0.084}>EUR</option>
-                                        <option value={0.09}>USD</option>
+                                        <option value="1">SEK</option>
+                                        <option value="0.084">EUR</option>
+                                        <option value="0.09">USD</option>
                                     </select>
                                 </span>
                             </th>
