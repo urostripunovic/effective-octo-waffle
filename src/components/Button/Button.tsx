@@ -8,7 +8,7 @@ function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-const buttonVariants = cva("button", {
+export const buttonVariants = cva("button", {
     variants: {
         variant: {
             primary:

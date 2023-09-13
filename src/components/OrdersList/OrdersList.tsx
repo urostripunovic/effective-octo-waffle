@@ -154,9 +154,8 @@ export function OrdersList() {
                                     <td className="py-3 px-6 text-center">
                                         {order.products.length}
                                     </td>
-                                    <td className="py-3 px-6 text-center">
+                                    <td className="py-3 px-6 text-right">
                                         {totalSum + " " + currency}
-                                        {/*Ändra så att man kan byta mellan valutor*/}
                                     </td>
                                 </tr>
                             );
